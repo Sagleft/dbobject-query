@@ -70,8 +70,8 @@ func (c *Client) Add(collection string, fields map[string]interface{}) error {
 // AddAndGet - writes a new line to the base
 // fields - map with key-value
 // returnField (optional) - returns the value of the specified field of the added record, if necessary
-func (c *Client) AddAndGet(collection string, fields map[string]interface{}, returnField ...string) (string, error) {
-	sqlQuery, keyValues := c.buildSQLQueryAdd(collection, fields)
+func (c *Client) AddAndGet(collection string, fieldsMap map[string]interface{}, returnField ...string) (string, error) {
+	sqlQuery, keyValues := c.buildSQLQueryAdd(collection, fieldsMap)
 	row := c.sqlDB.QueryRow(sqlQuery, keyValues...)
 	err := row.Err()
 	if err != nil {
@@ -85,4 +85,9 @@ func (c *Client) AddAndGet(collection string, fields map[string]interface{}, ret
 	}
 
 	return resultField, nil
+}
+
+// Get - request one or more values from the database
+func (c *Client) Get(collection string, fieldsMap map[string]interface{}, searchOpts ...SearchOption) {
+	// TODO
 }
