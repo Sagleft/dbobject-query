@@ -50,6 +50,7 @@ func joinOptions(glue string, options ...SearchOption) SearchOption {
 	resultValues := []interface{}{}
 	optionsSQL := []string{}
 
+	// here you can probably somehow improve
 	for _, option := range options {
 		optionsSQL = append(optionsSQL, option.SQL)
 		resultValues = append(resultValues, option.Values...)
