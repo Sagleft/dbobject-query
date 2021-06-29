@@ -46,10 +46,7 @@ func More(key string, value interface{}) SearchOption {
 	return optionVal(key, ">", value)
 }
 
-// And - multiple values should be observed together
-func And(options ...SearchOption) SearchOption {
-	stringsGlue := " AND "
-
+func joinOptions(glue string, options ...SearchOption) SearchOption {
 	resultValues := []interface{}{}
 	optionsSQL := []string{}
 
@@ -58,9 +55,19 @@ func And(options ...SearchOption) SearchOption {
 		resultValues = append(resultValues, option.Values...)
 	}
 
-	resultSQL := "(" + strings.Join(optionsSQL, stringsGlue) + ")"
+	resultSQL := "( " + strings.Join(optionsSQL, glue) + " )"
 	return SearchOption{
 		SQL:    resultSQL,
 		Values: resultValues,
 	}
+}
+
+// And - multiple values should be observed together
+func And(options ...SearchOption) SearchOption {
+	return joinOptions("AND")
+}
+
+// Or - one of the values must be true
+func Or(options ...SearchOption) SearchOption {
+	return joinOptions("OR")
 }
