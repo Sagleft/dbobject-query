@@ -87,7 +87,29 @@ func (c *Client) AddAndGet(collection string, fieldsMap map[string]interface{}, 
 	return resultField, nil
 }
 
-// Get - request one or more values from the database
-func (c *Client) Get(collection string, fieldsMap map[string]interface{}, searchOpts ...SearchOption) {
-	// TODO
+// Get - request one or more values from the database.
+// searchOpts must be 0 or 1 elements. You can use And, Or to combine multiple.
+// returns: maps (key-value), error
+func (c *Client) Get(
+	collection string, fieldsMap map[string]interface{}, searchOpts ...SearchOption,
+) ([]map[string]interface{}, error) {
+	resultMap := []map[string]interface{}{}
+
+	sqlQuery := ""               // TODO
+	keyValues := []interface{}{} // TODO
+
+	rows, err := c.sqlDB.Query(sqlQuery, keyValues...)
+	if err != nil {
+		return resultMap, err
+	}
+	resultArr := make([]interface{}, len(fieldsMap))
+	for rows.Next() {
+		err := rows.Scan(resultArr...) // test this. interface or pointer to interface?
+		if err != nil {
+			return resultMap, err
+		}
+		// TODO: add data to resultMap
+	}
+
+	return resultMap, nil
 }
